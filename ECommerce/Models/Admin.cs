@@ -21,23 +21,22 @@ namespace ECommerce.Models
         public void addItem() { }
         public void updateItem() { }
 
-        public override void manageAccount(User user)
+        public void manageAccount(User user)
         {
             //string id, string userName, string address, string email, string password
             throw new NotImplementedException();
         }
 
-        public override void signIn(User user)
+        public void signIn(string email, string password)
         {
             throw new NotImplementedException();
         }
 
-        public override void signOut(User user)
+        public void signOut(User user)
         {
             throw new NotImplementedException();
         }
-
-
+       
     }
 
 }

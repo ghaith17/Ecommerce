@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ECommerce.Models
 {
-    abstract public class User
+    public class User
     {
         private string id;
         public string Id
@@ -57,13 +57,16 @@ namespace ECommerce.Models
             this.v = v;
         }
 
-        public abstract void signIn(User user);
-        //string email, string password
+        //string s = "select * from User where email ='" + email + "' and password ='" + password + "'";
+
+       /* public abstract void signIn(string email, string password);
         public abstract void signOut(User user);
-        public abstract void manageAccount(User user);
-        //string id, string userName, string address, string email, string password
 
-
-
+        public void manageAccount(User user)*/
+    
     }
+        
+
+
+
 }

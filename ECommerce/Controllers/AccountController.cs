@@ -1,32 +1,124 @@
-﻿using ECommerce.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ECommerce.Models;
+using System.Web.Security;
+
+
 
 namespace ECommerce.Controllers
 {
     public class AccountController : Controller
     {
-        protected Admin admin;
-        protected Customer customer;
         // GET: Account
-        public ActionResult Index()
+        
+        public ActionResult Login()
         {
             return View();
         }
 
-        public void manageAccount(User user, string id, string userName, string address, string email, string password)
+        [HttpPost]
+        public ActionResult Login(User user)
         {
-            if (user is Admin)
+            using (var modelContext = new modelContext())
             {
-                admin.manageAccount((Admin)user);
+                bool isValid = modelContext.Users.Any(x => x.Email == user.Email && x.Password == user.Password);
+                if (isValid)
+                {
+                    FormsAuthentication.SetAuthCookie(user.UserNamee, false);
+                    return RedirectToAction("Index", "Users");
+                }
+                ModelState.AddModelError("","Invalid email and password");
+                return View();
             }
-            if (user is Customer)
+
+        }
+        public ActionResult Signup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Signup(User user)
+        {
+            using (var modelContext = new modelContext())
             {
-                customer.manageAccount((Customer)user);
+                modelContext.Users.Add(user);
+                modelContext.SaveChanges();
             }
+            return RedirectToAction("Login");
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
+
+        public ActionResult manageAccount()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult manageAccount(User newUser)
+        {
+            using (var modelContext = new modelContext())
+            {
+                User oldUser = new User();
+                oldUser = (from obj in modelContext.Users
+                        where obj.Id == newUser.Id
+                        select obj).FirstOrDefault();
+
+                
+                newUser.Id = oldUser.Id;
+                newUser.UserNamee = oldUser.UserNamee;
+                newUser.Address = oldUser.Address;
+                newUser.Email = oldUser.Email;
+                newUser.Password = oldUser.Password;
+
+                modelContext.SaveChanges();
+            }
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public ActionResult manageAccount(string id)
+        {
+            using (var modelContext = new modelContext())
+            {
+                User oldUser = new User();
+                oldUser = (from obj in modelContext.Users
+                           where obj.Id == id
+                           select obj).FirstOrDefault();
+                modelContext.SaveChanges();
+                return View(oldUser);
+            }
+            
+        }
+
+        [HttpPost]
+        public ActionResult sendFeedback(FeedBack feedBack)
+        {
+            var modelContext = new modelContext();
+            if (feedBack != null)
+            {
+                modelContext.feedBacks.Add(feedBack);
+                modelContext.SaveChanges();
+                return RedirectToAction("Login");
+            }
+            return View();
+
+        }
+        [HttpGet]
+        public ActionResult sendFeedback()
+        {
+
+            return View();
+
         }
     }
 }

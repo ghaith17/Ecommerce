@@ -26,6 +26,7 @@ namespace ECommerce.Models
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<VirtualWallet> VirtualWallets { get; set; }
+        public DbSet<FeedBack> feedBacks { get; set; }
 
         // Add a DbSet for each entity type that you want to include in your model. For more information 
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
