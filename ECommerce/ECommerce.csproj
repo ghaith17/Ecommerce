@@ -192,13 +192,16 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\AddItem.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\PlaceOrder.cshtml" />
+    <Content Include="Views\Product\UpdateItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Login\" />
-    <Folder Include="Views\Order\" />
-    <Folder Include="Views\Product\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

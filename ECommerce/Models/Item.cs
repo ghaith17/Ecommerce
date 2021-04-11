@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,6 +16,7 @@ namespace ECommerce.Models
             set { this.id = value; }
         }
         private int quantity;
+        [Range(1, 50)]
         public int Quantity
         {
             get { return this.quantity; }

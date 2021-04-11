@@ -7,6 +7,8 @@ namespace ECommerce.Models
 {
     public class Order
     {
+
+        private ShoppingCart shoppingCart;
         public Order()  { }
         private string id;
         public string Id
@@ -15,7 +17,10 @@ namespace ECommerce.Models
             set { this.id = value; }
         }
         Bill bill = new Bill();
-        public void createOrder() { }
+        public void createOrder(ShoppingCart shoppingCart)
+        {
+            this.shoppingCart = shoppingCart;
+        }
         public void getShoppingCart() { }
         public void getOrderStatus() { }
     }

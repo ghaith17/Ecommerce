@@ -19,7 +19,7 @@ namespace ECommerce.Controllers
             return View(items);
         }
         [HttpGet]
-        public ActionResult getdetails(string id)
+        public ActionResult GetDetails(string id)
         {
             Item item = new Item();
             item = (from obj in DB.Items
@@ -27,8 +27,8 @@ namespace ECommerce.Controllers
                      select obj).FirstOrDefault();
             return View(item);
         }
-        [HttpPost]
-        public ActionResult deleteItem(string id)
+        
+        public ActionResult DeleteItem(string id)
         {
             Item item = new Item();
             item = (from obj in DB.Items
@@ -36,11 +36,19 @@ namespace ECommerce.Controllers
                      select obj).FirstOrDefault();
             DB.Items.Remove(item);
             DB.SaveChanges();
-            return View();
+            return RedirectToAction("Index");
         }
-       
+        [HttpGet]
+        public ActionResult AddItem()
+        {
+
+
+            
+            return View();
+
+        }
         [HttpPost]
-        public ActionResult addItem(Item item)
+        public ActionResult AddItem(Item item)
         {
 
 
@@ -50,9 +58,33 @@ namespace ECommerce.Controllers
                 DB.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View();
+            return View("Index");
 
 
+        }
+        [HttpGet]
+        public ActionResult UpdateItem(string id)
+        {
+            Item item = new Item();
+            item = (from obj in DB.Items
+                     where obj.Id ==id
+                     select obj).FirstOrDefault();
+           
+            DB.SaveChanges();
+            return View(item);
+        }
+        [HttpPost]
+        public ActionResult UpdateItem(Item item)
+        {
+            Item Oitem = new Item();
+            Oitem = (from obj in DB.Items
+                    where obj.Id == item.Id
+                     select obj).FirstOrDefault();
+            Oitem.Name = item.Name;
+            Oitem.Price = item.Price;
+            Oitem.Quantity = item.Quantity;
+            DB.SaveChanges();
+            return RedirectToAction("Index");
         }
 
     }
