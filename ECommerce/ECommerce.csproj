@@ -145,6 +145,10 @@
     <Compile Include="Migrations\202104112257028_t.Designer.cs">
       <DependentUpon>202104112257028_t.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104141235250_gg.cs" />
+    <Compile Include="Migrations\202104141235250_gg.Designer.cs">
+      <DependentUpon>202104141235250_gg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Bill.cs" />
@@ -198,13 +202,20 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\manageAccount.cshtml" />
+    <Content Include="Views\Account\sendFeedback.cshtml" />
+    <Content Include="Views\Account\Signup.cshtml" />
+    <Content Include="Views\Admin\viewFeedback.cshtml" />
+    <Content Include="Views\Admin\viewUsers.cshtml" />
+    <Content Include="Views\Product\AddItem.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\UpdateItem.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\PlaceOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Login\" />
-    <Folder Include="Views\Order\" />
-    <Folder Include="Views\Product\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -225,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104112257028_t.resx">
       <DependentUpon>202104112257028_t.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104141235250_gg.resx">
+      <DependentUpon>202104141235250_gg.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

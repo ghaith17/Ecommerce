@@ -20,6 +20,13 @@ namespace ECommerce.Models
         public void createOrder(ShoppingCart shoppingCart)
         {
             this.shoppingCart = shoppingCart;
+            Item item = new Item();
+         /*   foreach( var i in this.shoppingCart.ListOfITems)
+            {
+                item = (from obj in DB.Items
+                         where obj.Id == item.Id
+                         select obj).FirstOrDefault();
+            }*/
         }
         public void getShoppingCart() { }
         public void getOrderStatus() { }

@@ -41,9 +41,11 @@ namespace ECommerce.Controllers
         [HttpPost]
         public ActionResult Signup(User user)
         {
-            DB.Users.Add(user);
-            DB.SaveChanges();
-
+            using (var modelContext = new modelContext())
+            {
+                modelContext.Users.Add(user);
+                modelContext.SaveChanges();
+            }
             return RedirectToAction("Login");
         }
 
