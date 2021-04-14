@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -33,7 +34,8 @@ namespace ECommerce.Models
         }
         private string password;
         private string v;
-
+        [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{5,}", ErrorMessage = "Your password must be at least 5 characters long and contain at least 1 letter and 1 number")]
+        [DataType(DataType.Password)]
         public string Password
         {
             get { return this.password; }

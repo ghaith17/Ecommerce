@@ -30,6 +30,38 @@
                     <li>@Html.ActionLink("Login", "Login", "Account")</li>
 
                 </ul>
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header pull-left">
+                            <a class="navbar-brand" href="/LT/">Application name</a>
+                        </div>
+                        <div class="navbar-header pull-right">
+                            <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown">EN<b class="caret"></b></a>
+                            <ul class="dropdown-menu realign">
+                                <li><a href="/LT/DE">DE</a></li>
+                                <li><a href="/LT/EN">EN</a></li>
+                                <li><a href="/LT/ES">ES</a></li>
+                                <li><a href="/LT/FR">FR</a></li>
+                                <li><a href="/LT/RO">RO</a></li>
+                            </ul>
+                            <button class="navbar-toggle" type="button" data-target="#MainMenu" data-toggle="collapse">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse clear-collapse" id="MainMenu">
+                            <ul class="nav navbar-nav">
+                                <li><a href="/LT/">Home</a></li>
+                                <li><a href="/LT/Home/About">About</a></li>
+                                <li><a href="/LT/Home/Contact">Contact</a></li>
+                                <li><a href="/LT/Survey/Instructions">Survey</a></li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a id="registerLink" href="/LT/Account/Register">Register</a></li>
+                                <li><a id="loginLink" href="/LT/Account/Login">Log in</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

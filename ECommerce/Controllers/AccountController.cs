@@ -16,7 +16,7 @@ namespace ECommerce.Controllers
         
         public ActionResult Login()
         {
-            return View();
+            return View("Login");
         }
 
         [HttpPost]
@@ -45,6 +45,8 @@ namespace ECommerce.Controllers
         {
             using (var modelContext = new modelContext())
             {
+                var count = (from u in modelContext.Users  select u).Count()+1;
+                user.Id = count.ToString();
                 modelContext.Users.Add(user);
                 modelContext.SaveChanges();
             }
