@@ -13,27 +13,25 @@ namespace ECommerce.Controllers
     public class AccountController : Controller
     {
         // GET: Account
+
+        modelContext DB = new modelContext();
         
         public ActionResult Login()
         {
-            return View();
+            return View("Login");
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult Login(User user)
         {
-            using (var modelContext = new modelContext())
+            bool isValid = DB.Users.Any(x => x.Email == user.Email && x.Password == user.Password);
+            if (isValid)
             {
-                bool isValid = modelContext.Users.Any(x => x.Email == user.Email && x.Password == user.Password);
-                if (isValid)
-                {
-                    FormsAuthentication.SetAuthCookie(user.UserNamee, false);
-                    return RedirectToAction("Index", "Users");
-                }
+                FormsAuthentication.SetAuthCookie(user.UserNamee, false);
+                return RedirectToAction("Index", "Users");
+            }
                 ModelState.AddModelError("","Invalid email and password");
                 return View();
-            }
-
         }
         public ActionResult Signup()
         {
@@ -43,11 +41,9 @@ namespace ECommerce.Controllers
         [HttpPost]
         public ActionResult Signup(User user)
         {
-            using (var modelContext = new modelContext())
-            {
-                modelContext.Users.Add(user);
-                modelContext.SaveChanges();
-            }
+            DB.Users.Add(user);
+            DB.SaveChanges();
+
             return RedirectToAction("Login");
         }
 
@@ -66,48 +62,42 @@ namespace ECommerce.Controllers
         [HttpPost]
         public ActionResult manageAccount(User newUser)
         {
-            using (var modelContext = new modelContext())
-            {
-                User oldUser = new User();
-                oldUser = (from obj in modelContext.Users
-                        where obj.Id == newUser.Id
-                        select obj).FirstOrDefault();
-
-                
-                newUser.Id = oldUser.Id;
-                newUser.UserNamee = oldUser.UserNamee;
-                newUser.Address = oldUser.Address;
-                newUser.Email = oldUser.Email;
-                newUser.Password = oldUser.Password;
-
-                modelContext.SaveChanges();
-            }
+            User oldUser = new User();
+            oldUser = (from obj in DB.Users
+                       where obj.Id == newUser.Id
+                       select obj).FirstOrDefault();
+            
+            newUser.Id = oldUser.Id;
+            newUser.UserNamee = oldUser.UserNamee;
+            newUser.Address = oldUser.Address;
+            newUser.Email = oldUser.Email;
+            newUser.Password = oldUser.Password;
+            
+            DB.SaveChanges();
             return RedirectToAction("Login");
         }
 
         [HttpGet]
         public ActionResult manageAccount(string id)
         {
-            using (var modelContext = new modelContext())
-            {
-                User oldUser = new User();
-                oldUser = (from obj in modelContext.Users
-                           where obj.Id == id
-                           select obj).FirstOrDefault();
-                modelContext.SaveChanges();
-                return View(oldUser);
-            }
+            User oldUser = new User();
+            oldUser = (from obj in DB.Users
+                       where obj.Id == id
+                       select obj).FirstOrDefault();
+            DB.SaveChanges();
+            return View(oldUser);
+            
             
         }
 
         [HttpPost]
         public ActionResult sendFeedback(FeedBack feedBack)
         {
-            var modelContext = new modelContext();
+
             if (feedBack != null)
             {
-                modelContext.feedBacks.Add(feedBack);
-                modelContext.SaveChanges();
+                DB.feedBacks.Add(feedBack);
+                DB.SaveChanges();
                 return RedirectToAction("Login");
             }
             return View();
