@@ -27,21 +27,17 @@ namespace ECommerce.Models
         {
 
         }
-
-        public override void signIn(User User)
+        public void signIn(string email, string password) { }
+ 
+        public void signOut(User user)
         {
-            throw new NotImplementedException();
+
+        }
+        public void manageAccount(User user)
+        {
+
         }
 
-        public override void signOut(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void manageAccount(User user)
-        {
-            throw new NotImplementedException();
-        }
 
         public void createOrder()
         {

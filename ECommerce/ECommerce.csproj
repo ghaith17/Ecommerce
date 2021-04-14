@@ -129,10 +129,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -140,11 +141,16 @@
     <Compile Include="Migrations\202104091133012_n.Designer.cs">
       <DependentUpon>202104091133012_n.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104112257028_t.cs" />
+    <Compile Include="Migrations\202104112257028_t.Designer.cs">
+      <DependentUpon>202104112257028_t.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DeliverySupplier.cs" />
+    <Compile Include="Models\FeedBack.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\modelContext.cs" />
     <Compile Include="Models\Offer.cs" />
@@ -192,16 +198,13 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Product\AddItem.cshtml" />
-    <Content Include="Views\Order\Index.cshtml" />
-    <Content Include="Views\Order\PlaceOrder.cshtml" />
-    <Content Include="Views\Product\UpdateItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Login\" />
+    <Folder Include="Views\Order\" />
+    <Folder Include="Views\Product\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -219,6 +222,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202104091133012_n.resx">
       <DependentUpon>202104091133012_n.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104112257028_t.resx">
+      <DependentUpon>202104112257028_t.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
