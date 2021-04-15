@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using ECommerce.Models;
 using System.Web.Security;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
+
 
 
 namespace ECommerce.Controllers
@@ -26,10 +28,6 @@ namespace ECommerce.Controllers
                 if (isValid)
                 {
                     FormsAuthentication.SetAuthCookie(user.UserNamee, false);
-                   User oldUser = (from obj in modelContext.Users
-                                   where obj.Email == user.Email && obj.Password == user.Password
-                                   select obj).FirstOrDefault();
-                    Session["id"] = oldUser.Id;
                     return RedirectToAction("Index", "Users");
                 }
                 ModelState.AddModelError("","Invalid email and password");
@@ -61,7 +59,12 @@ namespace ECommerce.Controllers
             return RedirectToAction("Login");
         }
 
-        [Authorize]
+        public ActionResult manageAccount()
+        {
+
+            return View();
+        }
+
         [HttpPost]
         public ActionResult manageAccount(User newUser)
         {
@@ -83,11 +86,10 @@ namespace ECommerce.Controllers
             }
             return RedirectToAction("Login");
         }
-        [Authorize]
+
         [HttpGet]
         public ActionResult manageAccount(string id)
         {
-           
             using (var modelContext = new modelContext())
             {
                 User oldUser = new User();
