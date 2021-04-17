@@ -1,4 +1,4 @@
-﻿  using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,7 +21,7 @@ namespace ECommerce.Controllers
             return View("Login");
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult Login(User user)
         {
             bool isValid = DB.Users.Any(x => x.Email == user.Email && x.Password == user.Password);
@@ -41,8 +41,11 @@ namespace ECommerce.Controllers
         [HttpPost]
         public ActionResult Signup(User user)
         {
-                DB.Users.Add(user);
-                DB.SaveChanges();
+            using (var modelContext = new modelContext())
+            {
+                modelContext.Users.Add(user);
+                modelContext.SaveChanges();
+            }
             return RedirectToAction("Login");
         }
 
