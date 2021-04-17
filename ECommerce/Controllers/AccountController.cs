@@ -2,8 +2,7 @@
 using System.Web.Mvc;
 using ECommerce.Models;
 using System.Web.Security;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
+
 
 
 namespace ECommerce.Controllers
@@ -11,7 +10,7 @@ namespace ECommerce.Controllers
     public class AccountController : Controller
     {
         // GET: Account
-        
+
         public ActionResult Login()
         {
             return View("Login");
@@ -26,13 +25,13 @@ namespace ECommerce.Controllers
                 if (isValid)
                 {
                     FormsAuthentication.SetAuthCookie(user.UserNamee, false);
-                   User oldUser = (from obj in modelContext.Users
-                                   where obj.Email == user.Email && obj.Password == user.Password
-                                   select obj).FirstOrDefault();
+                    User oldUser = (from obj in modelContext.Users
+                                    where obj.Email == user.Email && obj.Password == user.Password
+                                    select obj).FirstOrDefault();
                     Session["id"] = oldUser.Id;
                     return RedirectToAction("Index", "Users");
                 }
-                ModelState.AddModelError("","Invalid email and password");
+                ModelState.AddModelError("", "Invalid email and password");
                 return View();
             }
 
@@ -47,7 +46,7 @@ namespace ECommerce.Controllers
         {
             using (var modelContext = new modelContext())
             {
-                var count = (from u in modelContext.Users  select u).Count()+1;
+                var count = (from u in modelContext.Users select u).Count() + 1;
                 user.Id = count.ToString();
                 modelContext.Users.Add(user);
                 modelContext.SaveChanges();
@@ -69,10 +68,10 @@ namespace ECommerce.Controllers
             {
                 User oldUser = new User();
                 oldUser = (from obj in modelContext.Users
-                        where obj.Id == newUser.Id
-                        select obj).FirstOrDefault();
+                           where obj.Id == newUser.Id
+                           select obj).FirstOrDefault();
 
-                
+
                 newUser.Id = oldUser.Id;
                 newUser.UserNamee = oldUser.UserNamee;
                 newUser.Address = oldUser.Address;
@@ -87,7 +86,7 @@ namespace ECommerce.Controllers
         [HttpGet]
         public ActionResult manageAccount(string id)
         {
-           
+
             using (var modelContext = new modelContext())
             {
                 User oldUser = new User();
@@ -97,7 +96,7 @@ namespace ECommerce.Controllers
                 modelContext.SaveChanges();
                 return View(oldUser);
             }
-            
+
         }
 
         [HttpPost]
