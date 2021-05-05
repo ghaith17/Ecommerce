@@ -2,13 +2,15 @@
 using System.Web.Mvc;
 using ECommerce.Models;
 using System.Web.Security;
-
-
+using System.Web.Mvc.Filters;
 
 namespace ECommerce.Controllers
 {
     public class AccountController : Controller
     {
+
+
+
         // GET: Account
 
         public ActionResult Login()
@@ -57,6 +59,15 @@ namespace ECommerce.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+            /*Session["id"] = null;
+            Session.Clear();
+            Session.RemoveAll();
+            Session.Abandon();
+            Response.AddHeader("Cache-control", "no-store, must-revalidate, private, no-cache");
+            Response.AddHeader("Pragma", "no-cache");
+            Response.AddHeader("Expires", "0");
+            Response.AppendToLog("window.location.reload();");*/
+
             return RedirectToAction("Login");
         }
 
@@ -64,6 +75,7 @@ namespace ECommerce.Controllers
         [HttpPost]
         public ActionResult manageAccount(User newUser)
         {
+            
             using (var modelContext = new modelContext())
             {
                 User oldUser = new User();
@@ -82,42 +94,86 @@ namespace ECommerce.Controllers
             }
             return RedirectToAction("Login");
         }
+       
+        //[CustomAuthorizeAttribute]
         [Authorize]
         [HttpGet]
         public ActionResult manageAccount(string id)
         {
-
-            using (var modelContext = new modelContext())
+            //Session["id"] != null)
+            if (check() == true)
             {
-                User oldUser = new User();
-                oldUser = (from obj in modelContext.Users
-                           where obj.Id == id
-                           select obj).FirstOrDefault();
-                modelContext.SaveChanges();
-                return View(oldUser);
-            }
+                using (var modelContext = new modelContext())
+                {
+                    User oldUser = new User();
+                    oldUser = (from obj in modelContext.Users
+                               where obj.Id == id
+                               select obj).FirstOrDefault();
+                    modelContext.SaveChanges();
+                    return View(oldUser);
+                }
+            }else
+                return RedirectToAction("Login");
+
 
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult sendFeedback(FeedBack feedBack)
         {
             var modelContext = new modelContext();
             if (feedBack != null)
             {
+                var count = (from u in modelContext.Users select u).Count() + 1;
+                feedBack.Id = count.ToString();
                 modelContext.feedBacks.Add(feedBack);
                 modelContext.SaveChanges();
                 return RedirectToAction("Login");
             }
             return View();
-
         }
+        [Authorize]
         [HttpGet]
         public ActionResult sendFeedback()
         {
+            if (check() == true)
+            {
+                return View();
 
-            return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
+               
 
         }
+      /*  protected override void OnAuthentication(AuthenticationContext filterContext)
+        {
+            //session = UserManager.Session();
+            if (Session["id"] == null)
+            {
+                RedirectToAction("Login");
+                //RedirectToControllers(Helper.Control.ACCOUNT, Helper.Action.ACCOUNT_LOGIN);
+            }
+
+            base.OnAuthentication(filterContext);
+        }
+      */
+        protected bool check()
+        {
+            if (Session["id"] != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
     }
 }

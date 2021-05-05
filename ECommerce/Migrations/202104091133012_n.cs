@@ -52,7 +52,7 @@ namespace ECommerce.Migrations
                         Price = c.Double(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.Offers",
                 c => new

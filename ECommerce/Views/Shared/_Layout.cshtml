@@ -33,11 +33,12 @@
                                     @Html.ActionLink("3D Virtual Store", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                                 </div>
                                 <div class="navbar-header pull-right">
-                                    <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown">EN<b class="caret"></b></a>
+                                    <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown">Profile<b class="caret"></b></a>
                                     <ul class="dropdown-menu realign">
 
                                         <li>@Html.ActionLink("Manage Account", "manageAccount", "Account", new { Id = Session["id"] }, null)</li>
                                         <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                                        <li>@Html.ActionLink("Send Feedback", "sendFeedback", "Account")</li>
                                     </ul>
                                     <button class="navbar-toggle" type="button" data-target="#MainMenu" data-toggle="collapse">
                                         <span class="glyphicon glyphicon-th-list"></span>
@@ -48,6 +49,7 @@
                                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
                                         <li>@Html.ActionLink("About", "About", "Home")</li>
                                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                                        
                                     </ul>
 
                                 </div>
