@@ -34,7 +34,17 @@ namespace ECommerce.Models
             get { return this.billDate; }
             set { this.billDate = value; }
         }
-        public void generateBill() { }
+        public void generateBill(Order order)
+        {
+            double total = 0;
+            foreach (var item in order.getShoppingCart().ListOfITems)
+            {
+                total += (Double.Parse(item.Price)) * item.Quantity;
+            }
+            this.value = total.ToString();
+            this.status = "shipped";
+            this.billDate = DateTime.Now;
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,7 +8,7 @@ namespace ECommerce.Models
 {
     public class ShoppingCart
     {
-        private List<Item> listOfITems;
+        private List<Item> listOfITems = new List<Item>();
         public ShoppingCart() { }
         private string id;
         public string Id
@@ -16,14 +17,17 @@ namespace ECommerce.Models
             set { this.id = value; }
         }
 
-        public List<Item> ListOfITems { get => ListOfITems; set => ListOfITems = value; }
-
+        
+        public virtual List<Item> ListOfITems { get => listOfITems; set => listOfITems = value; }
+        public string Item_Id { get; set; }
+        [ForeignKey("Item_Id")]
+        public virtual Item item { get; set; }
         public void addToShoppingCart(List<Item> items)
         {
-            foreach (var item in items)
-            {
-                ListOfITems.Add(item);
-            }
+            //foreach (var item in items)
+            //{
+            ListOfITems = items;
+           // }
         }
         
         public void updateQuantity() { }

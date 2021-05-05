@@ -2,8 +2,9 @@
 using System.Web.Mvc;
 using ECommerce.Models;
 using System.Web.Security;
-
-
+using System.Web.Mvc.Filters;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ECommerce.Controllers
 {
@@ -48,6 +49,8 @@ namespace ECommerce.Controllers
             {
                 var count = (from u in modelContext.Users select u).Count() + 1;
                 user.Id = count.ToString();
+                user.virtualWallet.VirtualWallet_Id = user.Id;
+                user.virtualWallet.Balance = 3000;
                 modelContext.Users.Add(user);
                 modelContext.SaveChanges();
             }
@@ -71,7 +74,7 @@ namespace ECommerce.Controllers
                            where obj.Id == newUser.Id
                            select obj).FirstOrDefault();
 
-
+                /// replace newUser with oldUser
                 newUser.Id = oldUser.Id;
                 newUser.UserNamee = oldUser.UserNamee;
                 newUser.Address = oldUser.Address;
@@ -119,5 +122,8 @@ namespace ECommerce.Controllers
             return View();
 
         }
+    
+     
+
     }
 }

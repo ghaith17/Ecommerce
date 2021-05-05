@@ -8,7 +8,7 @@ namespace ECommerce.Models
     public class Order
     {
 
-        private ShoppingCart shoppingCart;
+        private ShoppingCart shoppingCart = new ShoppingCart();
         public Order()  { }
         private string id;
         public string Id
@@ -17,19 +17,33 @@ namespace ECommerce.Models
             set { this.id = value; }
         }
         Bill bill = new Bill();
+        public Bill Bill
+        {
+            get { return this.bill; }
+            set { this.bill = value; }
+        }
         public void createOrder(ShoppingCart shoppingCart)
         {
-            this.shoppingCart = shoppingCart;
-            Item item = new Item();
-         /*   foreach( var i in this.shoppingCart.ListOfITems)
+            //this.shoppingCart = shoppingCart;
+            //Item item = new Item();
+            //foreach (var i in this.shoppingCart.ListOfITems)
+            //{
+            //    item = (from obj in DB.Items
+            //            where obj.Id == i.Id
+            //            select obj).FirstOrDefault();
+            //}
+            this.shoppingCart.Id = shoppingCart.Id;
+            foreach (var item in shoppingCart.ListOfITems)
             {
-                item = (from obj in DB.Items
-                         where obj.Id == item.Id
-                         select obj).FirstOrDefault();
-            }*/
+                this.shoppingCart.ListOfITems.Add(item);
+            }
+            
         }
-        public void getShoppingCart() { }
+        public ShoppingCart getShoppingCart() {
+            return shoppingCart;
+        }
         public void getOrderStatus() { }
+
     }
 
 }

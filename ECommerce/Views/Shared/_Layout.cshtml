@@ -5,6 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/CircleImage.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+
+    
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -33,7 +38,8 @@
                                     @Html.ActionLink("3D Virtual Store", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                                 </div>
                                 <div class="navbar-header pull-right">
-                                    <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown">EN<b class="caret"></b></a>
+                                    
+                                    <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown"><img src="~/images/Screenshot (1).png" class="roundedcorners" width="30" height="30" /><b class="caret"></b></a>
                                     <ul class="dropdown-menu realign">
 
                                         <li>@Html.ActionLink("Manage Account", "manageAccount", "Account", new { Id = Session["id"] }, null)</li>

@@ -1,0 +1,115 @@
+﻿@model ECommerce.Models.Offer
+
+@{
+    ViewBag.Title = "manageOffer";
+}
+
+<h2>manageOffer</h2>
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+<script>
+    var jqOld = jQuery.noConflict();
+    jqOld(function () {
+        jqOld(".datepicker").datepicker();
+    })
+</script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#checkAll").click(function () {
+            $(".checkBox").prop('checked',
+                $(this).prop('checked'));
+        });
+    });
+</script>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("manageOffer", "Admin", FormMethod.Post)) {
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Quantity")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Price")
+            </th>
+            <th>
+                <input type="checkbox" id="checkAll" />
+            </th>
+            <th></th>
+        </tr>
+
+
+        @for (int i=0; i< Model.Items.Count;i++)
+        {
+        <tr>
+            <td>
+                @*@Html.DisplayFor(model => Model.ItemIds[i])*@
+                @Html.HiddenFor(model => Model.Items[i].Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Name)
+                @Html.HiddenFor(model => Model.Items[i].Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Price)
+                @Html.HiddenFor(model => Model.Items[i].Price)
+            </td>
+            <td>
+                @Html.CheckBoxFor(model => Model.Items[i].SealedItem , new { @class ="checkBox"})
+                @Html.HiddenFor(model => Model.Items[i].Item_Id)
+
+            </td>
+
+
+        </tr>
+        }
+
+    </table>
+
+
+
+    <div class="form-horizontal">
+        <h4>Offer</h4>
+        <hr />
+        *@Html.ValidationSummary(true, "", new { @class = "text-danger" })*
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "datepicker" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "datepicker" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "control-label col-md-2" } })
+                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,6 @@
+﻿.roundedcorners {
+    -webkit-border-radius: 100%;
+    -khtml-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+}

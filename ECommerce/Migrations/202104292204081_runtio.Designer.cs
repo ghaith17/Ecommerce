@@ -7,13 +7,13 @@ namespace ECommerce.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class n : IMigrationMetadata
+    public sealed partial class runtio : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(n));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(runtio));
         
         string IMigrationMetadata.Id
         {
-            get { return "202104091133012_n"; }
+            get { return "202104292204081_runtio"; }
         }
         
         string IMigrationMetadata.Source

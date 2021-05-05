@@ -23,7 +23,7 @@ namespace ECommerce.Controllers
         {
             Item item = new Item();
             item = (from obj in DB.Items
-                     where obj.Id == id
+                     where obj.Item_Id == id
                      select obj).FirstOrDefault();
             return View(item);
         }
@@ -32,7 +32,7 @@ namespace ECommerce.Controllers
         {
             Item item = new Item();
             item = (from obj in DB.Items
-                     where obj.Id == id
+                     where obj.Item_Id == id
                      select obj).FirstOrDefault();
             DB.Items.Remove(item);
             DB.SaveChanges();
@@ -67,7 +67,7 @@ namespace ECommerce.Controllers
         {
             Item item = new Item();
             item = (from obj in DB.Items
-                     where obj.Id ==id
+                     where obj.Item_Id ==id
                      select obj).FirstOrDefault();
            
             DB.SaveChanges();
@@ -78,7 +78,7 @@ namespace ECommerce.Controllers
         {
             Item Oitem = new Item();
             Oitem = (from obj in DB.Items
-                    where obj.Id == item.Id
+                    where obj.Item_Id == item.Item_Id
                      select obj).FirstOrDefault();
             Oitem.Name = item.Name;
             Oitem.Price = item.Price;

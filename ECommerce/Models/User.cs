@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -43,7 +44,7 @@ namespace ECommerce.Models
         }
         public User() //: base("name=User")
         {
-
+            virtualWallet = new VirtualWallet();
         }
         public User(string id, string userName, string address, string email, string password)
         {
@@ -58,14 +59,16 @@ namespace ECommerce.Models
         {
             this.v = v;
         }
-
+        public string VirtualWallet_Id { get; set; }
+        [ForeignKey("VirtualWallet_Id")]
+        public virtual VirtualWallet virtualWallet { get; set; }
         //string s = "select * from User where email ='" + email + "' and password ='" + password + "'";
 
-       /* public abstract void signIn(string email, string password);
-        public abstract void signOut(User user);
+        /* public abstract void signIn(string email, string password);
+         public abstract void signOut(User user);
 
-        public void manageAccount(User user)*/
-    
+         public void manageAccount(User user)*/
+
     }
         
 

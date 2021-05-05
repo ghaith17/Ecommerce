@@ -7,13 +7,13 @@ namespace ECommerce.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class t : IMigrationMetadata
+    public sealed partial class tareq : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(t));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(tareq));
         
         string IMigrationMetadata.Id
         {
-            get { return "202104112257028_t"; }
+            get { return "202104292228140_tareq"; }
         }
         
         string IMigrationMetadata.Source
