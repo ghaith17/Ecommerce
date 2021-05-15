@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1022
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce", "ECommerce\ECommerce.csproj", "{8F0552BE-753E-4FFF-9F62-6E2166BB110C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_Virtual_Store", "UnitTest_Virtual_Store\UnitTest_Virtual_Store.csproj", "{4C3C862C-0573-4504-B101-48C2EE94CF69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8F0552BE-753E-4FFF-9F62-6E2166BB110C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F0552BE-753E-4FFF-9F62-6E2166BB110C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F0552BE-753E-4FFF-9F62-6E2166BB110C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3C862C-0573-4504-B101-48C2EE94CF69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3C862C-0573-4504-B101-48C2EE94CF69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3C862C-0573-4504-B101-48C2EE94CF69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3C862C-0573-4504-B101-48C2EE94CF69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

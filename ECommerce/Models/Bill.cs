@@ -37,9 +37,9 @@ namespace ECommerce.Models
         public void generateBill(Order order)
         {
             double total = 0;
-            foreach (var item in order.getShoppingCart().ListOfITems)
+            foreach (var item in order.Items)
             {
-                total += (Double.Parse(item.Price)) * item.Quantity;
+                total += (item.Price * item.Quantity);
             }
             this.value = total.ToString();
             this.status = "shipped";

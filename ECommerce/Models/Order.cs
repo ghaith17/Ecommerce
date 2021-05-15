@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,8 +10,11 @@ namespace ECommerce.Models
     public class Order
     {
 
-        private ShoppingCart shoppingCart = new ShoppingCart();
-        public Order()  { }
+        
+      
+        public Order()  {
+            ItemsName = new List<string>() ;
+        }
         private string id;
         public string Id
         {
@@ -17,31 +22,35 @@ namespace ECommerce.Models
             set { this.id = value; }
         }
         Bill bill = new Bill();
-        public Bill Bill
+        public virtual Bill Bill
         {
             get { return this.bill; }
             set { this.bill = value; }
         }
+        List<Item> items = new List<Item>();
+
+        internal List<string> _ItemsName { get; set; }
+
+        [NotMapped]
+        public List<string> ItemsName
+        { 
+            get { return _ItemsName ; }
+            set { _ItemsName = value; }
+        }
+
+        public List<Item> Items { get => items; set => items = value; }
+
         public void createOrder(ShoppingCart shoppingCart)
         {
-            //this.shoppingCart = shoppingCart;
-            //Item item = new Item();
-            //foreach (var i in this.shoppingCart.ListOfITems)
-            //{
-            //    item = (from obj in DB.Items
-            //            where obj.Id == i.Id
-            //            select obj).FirstOrDefault();
-            //}
-            this.shoppingCart.Id = shoppingCart.Id;
-            foreach (var item in shoppingCart.ListOfITems)
+
+           foreach(var item in shoppingCart.ListOfITems)
             {
-                this.shoppingCart.ListOfITems.Add(item);
+                this.ItemsName.Add(item.Name);
+                this.Items.Add(item);
             }
             
         }
-        public ShoppingCart getShoppingCart() {
-            return shoppingCart;
-        }
+
         public void getOrderStatus() { }
 
     }

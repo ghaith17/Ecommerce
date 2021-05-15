@@ -11,6 +11,8 @@ using System.Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 
 namespace ECommerce.Models
 {
@@ -24,9 +26,15 @@ namespace ECommerce.Models
             get { return this.id; }
             set { this.id = value; }
         }
+        private string status;
+        public string Status
+        {
+            get { return this.status; }
+            set { this.status = value; }
+        }
         private DateTime startDate = new DateTime();
         [Required(ErrorMessage = "The start date is required")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy} HH:mm")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime StartDate
         {
             get { return this.startDate; }
@@ -34,7 +42,7 @@ namespace ECommerce.Models
         }
         private DateTime endDate = new DateTime();
         [Required(ErrorMessage = "The end date is required")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy} HH:mm")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime EndDate
         {
             get { return this.endDate; }
@@ -55,60 +63,74 @@ namespace ECommerce.Models
         }
         public virtual List<Item> Items { get => items; set => items = value; }
         private List<Item> items = new List<Item>();
-        public string Item_Id { get; set; }
-        [ForeignKey("Item_Id")]
-        public virtual Item  item { get ; set;}
+        //public string Item_Id { get; set; }
+        //[ForeignKey("Item_Id")]
+        //public virtual Item  item { get ; set;}
 
 
 
-        public void StopOffer(Offer offer)
+        public void StopOffer()
         {
             using (modelContext DB = new modelContext())
             {
-                // offer.Id = (DB.Offers.Count() + 1).ToString();
+                var offer = DB.Offers.SingleOrDefault(b => b.Offer_id.Equals(this.Offer_id));
 
-                foreach (var item in offer.Items)
+                foreach (var item in this.Items)
                 {
 
                     var result = DB.Items.SingleOrDefault(b => b.Item_Id.Equals(item.Item_Id));
+                  
                     if (result != null)
                     {
-                        if (item.SealedItem)
+                        if (result.SelectedItem)
                         {
-                            result.Price = ((int)(Double.Parse(result.Price) + (Double.Parse(result.Price) * Double.Parse(offer.Discount.ToString())))).ToString();
-                            result.SealedItem = item.SealedItem;
+                            result.Price = result.Price + (result.DefualtPrice * Double.Parse(this.Discount.ToString()));
+                            //result.offer.Offer_id = null;
+                            
+                            result.SelectedItem = false;
+                            DB.Set<Item>().AddOrUpdate(result);
                         }
+                        // DB.Offers.Find(this).Status = "Expired";
+                        offer.Items.Remove(result);
                         DB.SaveChanges();
                     }
 
                 }
+                offer.Status = "Expired";
+                DB.Set<Offer>().AddOrUpdate(offer);
+                DB.SaveChanges();
 
 
             }
         }
     
 
-        public void StartOffer(Offer offer)
+        public void StartOffer()
         {
             using (modelContext DB = new modelContext())
             {
-               // offer.Id = (DB.Offers.Count() + 1).ToString();
-
-                foreach (var item in offer.Items)
+                var offer = DB.Offers.SingleOrDefault(b => b.Offer_id.Equals(this.Offer_id));
+                foreach (var item in this.Items)
                 {
 
                     var result = DB.Items.SingleOrDefault(b => b.Item_Id.Equals(item.Item_Id));
                     if (result != null)
                     {
-                       if (item.SealedItem)
+                        if (item.SelectedItem)
                         {
-                            result.Price = ((int)(Double.Parse(result.Price) - (Double.Parse(result.Price) * Double.Parse(offer.Discount.ToString())))).ToString();
-                            result.SealedItem = !result.SealedItem;
+                            result.Price = result.Price - (result.Price * Double.Parse(this.Discount.ToString()));
+                            //DB.Entry<Item>(result).State = EntityState.Modified;
+                            DB.Set<Item>().AddOrUpdate(result);
                         }
+                       // this.Status = "Active";
+                       
                         DB.SaveChanges();
                     }
 
                 }
+                offer.Status = "Active";
+                DB.Set<Offer>().AddOrUpdate(offer);
+                DB.SaveChanges();
 
 
             }
@@ -119,6 +141,7 @@ namespace ECommerce.Models
             var task = Task.Run(() =>
             {
                 if (SchedulingStatus.Equals("ON") )
+                
                 {
                     try
                     {
@@ -131,13 +154,20 @@ namespace ECommerce.Models
 
                                 if (offer != null)
                                 {
-                                    if (offer.StartDate.Equals(DateTime.Now))
+
+                                    if (offer.StartDate.ToString("MM / dd / yyyy hh: mm tt").Equals(DateTime.Now.ToString("MM / dd / yyyy hh: mm tt")) && offer.Status.Equals("Scheduled"))
                                     {
-                                        offer.StartOffer(offer);
+                                       
+                                     //   DB.SaveChanges();
+                                        offer.StartOffer();
                                     }
-                                    else if(offer.EndDate.Equals(DateTime.Now))
+                                    else
+                                    if (offer.EndDate.ToString("MM / dd / yyyy hh: mm tt").Equals(DateTime.Now.ToString("MM / dd / yyyy hh: mm tt")) && offer.Status.Equals("Active"))
                                     {
-                                        offer.StopOffer(offer);
+                                       // offer.Status = "Expired";
+                                      //  DB.SaveChanges();
+
+                                        offer.StopOffer();
                                     }
 
                                 }

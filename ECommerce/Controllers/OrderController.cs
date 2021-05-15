@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.Validation;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,7 +22,7 @@ namespace ECommerce.Controllers
        static ShoppingCart shoppingCart = new ShoppingCart();
         static List<Item> items = new List<Item>();
         static Order order = new Order();
-
+        string connection_string = "Data Source=DESKTOP-TOKQDII;Initial Catalog = DB; User ID = Ghaith; Password=Yde079078@";
         // GET: Order
         public ActionResult Index()
         {
@@ -48,12 +50,12 @@ namespace ECommerce.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public ActionResult MyBill(Bill bill)
+        public ActionResult MyBill(Order o)
         {
+            o = order;
 
 
-
-            return View(bill);
+            return View(o);
 
         }
         [HttpGet]
@@ -78,18 +80,25 @@ namespace ECommerce.Controllers
                 var user = DB.Users.SingleOrDefault(b => b.Id.Equals(id));
                
                 user.virtualWallet.pay(Double.Parse(orderq.Bill.Value));
-                foreach (var item in orderq.getShoppingCart().ListOfITems)
+                foreach (var item in orderq.Items)
                 {
-                    var update = DB.Items.SingleOrDefault(b => b.Item_Id.Equals(item.Item_Id));
-                    update.Quantity -= item.Quantity;
+                    var update = (from obj in DB.Items
+                                         where obj.Item_Id == item.Item_Id
+                                         select obj).FirstOrDefault();
+                    update.Quantity--;
                 }
           
             }
-            return RedirectToAction("MyBill", orderq.Bill);
+            return RedirectToAction("MyBill", orderq);
            // return View(orderq.Bill);
 
         }
-        [HttpPost]
+        [HttpGet]
+        public ActionResult PlaceOrder()
+        {
+            return RedirectToAction("Checkouts");
+        }
+            [HttpPost]
         public ActionResult PlaceOrder(List<Item> items)
         {
 
@@ -100,36 +109,34 @@ namespace ECommerce.Controllers
             }
             shoppingCart.Id = (DB.ShoppingCarts.Count() +1 ).ToString();
             shoppingCart.addToShoppingCart(items);
-            order.Id =( DB.Orders.Count()+1).ToString();
+            order.Id =( DB.Orders.Count()+2).ToString();
 
             order.createOrder(shoppingCart);
-          //  var modelContext = new modelContext();
+
             if (order != null)
             {
-                // try
-                // {
+
                 Bill bill = new Bill();
-                bill.Id = (DB.Bills.Count() + 1).ToString();
+                bill.Id = (DB.Bills.Count() + 2).ToString();
                 bill.generateBill(order);
                 order.Bill = bill;
-               // DB.ShoppingCarts.Add(shoppingCart);
-                DB.Orders.Add(order);
+
+
+                DB.Bills.Add(order.Bill);
                 DB.SaveChanges();
-              //  }
-                //catch (DbEntityValidationException ex)
-                //{
-                //    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                //    {
-                //        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                //        {
-                //            Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                //        }
-                //    }
+                using (SqlConnection connect = new SqlConnection(connection_string))
+                {
+                   
+                    var a = String.Join(",", order.ItemsName);
+                    string query = "Insert Into [DB].[dbo].[Orders] (Id, Bill_Id, Items)" +
+                        "Values('" + order.Id + "','" + order.Bill.Id + "','" + a + "')";
+
+                    SqlCommand command = new SqlCommand(query, connect);
+                    connect.Open();
+                    command.ExecuteNonQuery();
+                }
 
 
-                //}
-             
-                
             }
             return RedirectToAction("Checkouts");
 

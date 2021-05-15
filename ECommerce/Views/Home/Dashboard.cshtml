@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<body>
+    <div class="row">
+
+        <div class="col-sm-4">
+            <div class="shadow p-3 mb-5 bg-white rounded">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <img src="~/images/order.png" alt="Card image cap" class="img-thumbnail">
+                        <br><br>
+                        <div class="col text-center">
+                            <a href="@Url.Action("Store", "Home")" class="btn btn-primary">Start shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="shadow p-3 mb-5 bg-white rounded">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <img src="~/images/feedback.png" alt="Card image cap" class="img-thumbnail">
+                        <br><br>
+                        <div class="col text-center">
+                            <a href="@Url.Action("sendFeedback", "Home")" class="btn btn-primary">Send Feedback</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

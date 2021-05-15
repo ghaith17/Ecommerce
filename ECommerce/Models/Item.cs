@@ -9,7 +9,9 @@ namespace ECommerce.Models
 {
     public class Item
     {
-        public Item()  { }
+        public Item()  {
+            //offer = new Offer();
+        }
         private string item_id;
         [Key]
         public string Item_Id
@@ -30,18 +32,32 @@ namespace ECommerce.Models
             get { return this.name; }
             set { this.name = value; }
         }
-        private string price;
-        public string Price
+        private string description;
+        public string Description
+        {
+            get { return this.description; }
+            set { this.description = value; }
+        }
+        private double price;
+        public double Price
         {
             get { return this.price; }
             set { this.price = value; }
         }
-        private bool sealedItem ;
-        public bool SealedItem
+        private double defualtPrice;
+        public double DefualtPrice
         {
-            get { return this.sealedItem; }
-            set { this.sealedItem = value; }
+            get { return this.defualtPrice; }
+            set { this.defualtPrice = value; }
         }
+        private bool selectedItem ;
+        public bool SelectedItem
+        {
+            get { return this.selectedItem; }
+            set { this.selectedItem = value; }
+        }
+
+        public virtual Offer? offer { get; set; }
 
 
 

@@ -4,7 +4,7 @@
     ViewBag.Title = "manageAccount";
 }
 
-<h2>manageAccount</h2>
+<h2>Manage Account</h2>
 
 @using (Html.BeginForm())
 {
@@ -17,7 +17,7 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserNamee, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("User Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.UserNamee, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UserNamee, "", new { @class = "text-danger" })
@@ -45,6 +45,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model=>model.virtualWallet)
             </div>
         </div>
 
@@ -56,6 +57,4 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+

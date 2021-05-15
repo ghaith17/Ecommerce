@@ -15,38 +15,52 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+
         <div class="col-md-10">
             @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
         </div>
     </div>
-    @for (int i = 0; i < Model.getShoppingCart().ListOfITems.Count; i++)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(model => Model.getShoppingCart().ListOfITems[i].Quantity)
-                @Html.HiddenFor(model => Model.getShoppingCart().ListOfITems[i].Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(model => Model.getShoppingCart().ListOfITems[i].Name)
-                @Html.HiddenFor(model => Model.getShoppingCart().ListOfITems[i].Name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => Model.getShoppingCart().ListOfITems[i].Price)
-                @Html.HiddenFor(model => Model.getShoppingCart().ListOfITems[i].Price)
-            </td>
-            <td>
-                @*@Html.CheckBoxFor(model => Model.Items[i].SealedItem, new { @class = "checkBox" })*@
-                @Html.HiddenFor(model => Model.getShoppingCart().ListOfITems[i].Item_Id)
-
-            </td>
-
-
+            <th>
+                @Html.DisplayName("Quantity")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Price")
+            </th>
+            <th></th>
         </tr>
-    }
+        @for (int i = 0; i < Model.Items.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => Model.Items[i].Quantity)
+                    @Html.HiddenFor(model => Model.Items[i].Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Model.Items[i].Name)
+                    @Html.HiddenFor(model => Model.Items[i].Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Model.Items[i].Price)
+                    @Html.HiddenFor(model => Model.Items[i].Price)
+                </td>
+                <td>
+                    @*@Html.CheckBoxFor(model => Model.Items[i].SelectedItem, new { @class = "checkBox" })*@
+                    @Html.HiddenFor(model => Model.Items[i].Item_Id)
+
+                </td>
+
+
+            </tr>
+        }
+        </table>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+        <div class="col text-center">
             <input type="submit" value="Checkouts" class="btn btn-default" />
         </div>
     </div>
