@@ -122,8 +122,20 @@ namespace ECommerce.Controllers
             return View();
 
         }
-    
-     
+        protected bool check()
+        {
+            if (Session["id"] != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
 
     }
 }
