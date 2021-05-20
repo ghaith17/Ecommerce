@@ -19,128 +19,196 @@ namespace ECommerce.Controllers
     public class OrderController : Controller
     {
         modelContext DB = new modelContext();
-       static ShoppingCart shoppingCart = new ShoppingCart();
+        static ShoppingCart shoppingCart = new ShoppingCart();
         static List<Item> items = new List<Item>();
         static Order order = new Order();
         string connection_string = "Data Source=DESKTOP-TOKQDII;Initial Catalog = DB; User ID = Ghaith; Password=Yde079078@";
         // GET: Order
         public ActionResult Index()
         {
-            List<Order> orders = new List<Order>();
-            orders = (from obj in DB.Orders
-                      select obj).ToList();
-            return View(orders);
+            if (User.Identity.IsAuthenticated )
+            {
+                if (Session["Role"] !=null)
+                {
+                    List<Order> orders = new List<Order>();
+                    orders = (from obj in DB.Orders
+                              select obj).ToList();
+                    return View(orders);
+                }
+               return new HttpNotFoundResult("Not Allowed");
+              
+            }
+            return RedirectToAction("Login", "Account");
         }
 
         public ActionResult OrderDetails(string id)
         {
-            Order order = new Order();
-            order = (from obj in DB.Orders
-                     where obj.Id == id
-                     select obj).FirstOrDefault();
-            return View(order);
+            if (User.Identity.IsAuthenticated )
+            {  if (Session["Role"] !=null)
+                {
+                    Order order = new Order();
+                    order = (from obj in DB.Orders
+                             where obj.Id == id
+                             select obj).FirstOrDefault();
+                    return View(order);
+                }
+               return new HttpNotFoundResult("Not Allowed");
+        
+            }
+            return RedirectToAction("Login", "Account");
+
         }
         public ActionResult DeleteFromOrder(string id)
         {
-            Item item = new Item();
-            item = (from obj in DB.Items
-                    where obj.Item_Id == id
-                    select obj).FirstOrDefault();
-            items.Remove(item);
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Session["Role"] == null)
+                {
+                    Item item = new Item();
+                    item = (from obj in DB.Items
+                            where obj.Item_Id == id
+                            select obj).FirstOrDefault();
+                    items.Remove(item);
+                    return RedirectToAction("Checkouts");
+                }
+               return new HttpNotFoundResult("Not Allowed");
+              
+            }
+            return RedirectToAction("Login", "Account");
+
         }
         [HttpGet]
         public ActionResult MyBill(Order o)
         {
-            o = order;
-
-
-            return View(o);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Session["Role"] == null)
+                {
+                    o = order;
+                    order = null;
+                    return View(o);
+                }
+               return new HttpNotFoundResult("Not Allowed");
+              
+            }
+            return RedirectToAction("Login", "Account");
 
         }
         [HttpGet]
         public ActionResult Checkouts()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Session["Role"] == null)
+                {
+                    return View(order);
+                }
+               return new HttpNotFoundResult("Not Allowed");
+      
+            }
+            return RedirectToAction("Login", "Account");
 
 
-
-            return View(order);
-            
         }
         [HttpPost]
         public ActionResult Checkouts(Order orderq)
         {
-            orderq = order;
-            
-            if (Session["id"] != null)
+            if (User.Identity.IsAuthenticated)
             {
-                
-
-                string id = Session["id"].ToString();
-                var user = DB.Users.SingleOrDefault(b => b.Id.Equals(id));
-               
-                user.virtualWallet.pay(Double.Parse(orderq.Bill.Value));
-                foreach (var item in orderq.Items)
+                if (Session["Role"] == null)
                 {
-                    var update = (from obj in DB.Items
-                                         where obj.Item_Id == item.Item_Id
-                                         select obj).FirstOrDefault();
-                    update.Quantity--;
+                    orderq = order;
+                    string id = Session["id"].ToString();
+                    var user = DB.Users.SingleOrDefault(b => b.Id.Equals(id));
+                    if (order != null)
+                        {
+
+                            Bill bill = new Bill();
+                            bill.Id = (DB.Bills.Count() + 2).ToString();
+                            bill.generateBill(order);
+                            order.Bill = bill;
+
+
+                            DB.Bills.Add(order.Bill);
+                            user.virtualWallet.pay(Double.Parse(orderq.Bill.Value));
+                            DB.SaveChanges();
+                            using (SqlConnection connect = new SqlConnection(connection_string))
+                            {
+
+                                var a = String.Join(",", order.ItemsName);
+                                string query = "Insert Into [DB].[dbo].[Orders] (Id, Bill_Id, Items)" +
+                                    "Values('" + order.Id + "','" + order.Bill.Id + "','" + a + "')";
+
+                                SqlCommand command = new SqlCommand(query, connect);
+                                connect.Open();
+                                command.ExecuteNonQuery();
+                           
+                            }
+
+                            return RedirectToAction("MyBill", orderq);
+
+                        }
+
+                        RedirectToAction("Store", "Home");
+
                 }
-          
+               return new HttpNotFoundResult("Not Allowed");
+            
             }
-            return RedirectToAction("MyBill", orderq);
-           // return View(orderq.Bill);
+            return RedirectToAction("Login", "Account");
+
+
 
         }
         [HttpGet]
         public ActionResult PlaceOrder()
         {
-            return RedirectToAction("Checkouts");
-        }
-            [HttpPost]
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Session["Role"] == null)
+                {
+                    return RedirectToAction("Checkouts");
+                }
+               return new HttpNotFoundResult("Not Allowed");
+            
+            }
+          
+           return RedirectToAction("Login", "Account");
+
+
+    }
+    [HttpPost]
         public ActionResult PlaceOrder(List<Item> items)
         {
-
-            foreach (var item in items)
+            if (User.Identity.IsAuthenticated)
             {
-                var result = DB.Items.SingleOrDefault(b => b.Name.Equals(item.Name));
-                item.Item_Id = result.Item_Id;
-            }
-            shoppingCart.Id = (DB.ShoppingCarts.Count() +1 ).ToString();
-            shoppingCart.addToShoppingCart(items);
-            order.Id =( DB.Orders.Count()+2).ToString();
-
-            order.createOrder(shoppingCart);
-
-            if (order != null)
-            {
-
-                Bill bill = new Bill();
-                bill.Id = (DB.Bills.Count() + 2).ToString();
-                bill.generateBill(order);
-                order.Bill = bill;
-
-
-                DB.Bills.Add(order.Bill);
-                DB.SaveChanges();
-                using (SqlConnection connect = new SqlConnection(connection_string))
+                if (Session["Role"] == null)
                 {
-                   
-                    var a = String.Join(",", order.ItemsName);
-                    string query = "Insert Into [DB].[dbo].[Orders] (Id, Bill_Id, Items)" +
-                        "Values('" + order.Id + "','" + order.Bill.Id + "','" + a + "')";
+                    foreach (var item in items)
+                    {
+                        var result = DB.Items.SingleOrDefault(b => b.Name.Equals(item.Name));
+                        result.Quantity -= item.Quantity;
+                        item.Item_Id = result.Item_Id;
+                        DB.SaveChanges();
+                    }
 
-                    SqlCommand command = new SqlCommand(query, connect);
-                    connect.Open();
-                    command.ExecuteNonQuery();
+                    shoppingCart.Id = (DB.ShoppingCarts.Count() + 1).ToString();
+                    shoppingCart.addToShoppingCart(items);
+                    order.Id = (DB.Orders.Count() + 1).ToString();
+
+                    order.createOrder(shoppingCart);
+
+
+                    return RedirectToAction("Checkouts");
                 }
-
-
+               return new HttpNotFoundResult("Not Allowed");
+    
             }
-            return RedirectToAction("Checkouts");
+
+            return RedirectToAction("Login", "Account");
+
 
         }
-    
+
     }
 }

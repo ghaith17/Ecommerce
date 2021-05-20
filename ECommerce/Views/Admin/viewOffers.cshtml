@@ -4,11 +4,9 @@
     ViewBag.Title = "viewOffers";
 }
 
-<h2>viewOffers</h2>
+<h2>view Offers</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -24,22 +22,25 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Discount)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Offer_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Offer_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id= item.Offer_id })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EndDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Discount)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Offer_id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Offer_id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Offer_id })
+    </td>
+</tr>
 }
 
 </table>

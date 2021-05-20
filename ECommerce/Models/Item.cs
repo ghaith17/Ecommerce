@@ -9,7 +9,8 @@ namespace ECommerce.Models
 {
     public class Item
     {
-        public Item()  {
+        public Item()
+        {
             //offer = new Offer();
         }
         private string item_id;
@@ -50,7 +51,7 @@ namespace ECommerce.Models
             get { return this.defualtPrice; }
             set { this.defualtPrice = value; }
         }
-        private bool selectedItem ;
+        private bool selectedItem;
         public bool SelectedItem
         {
             get { return this.selectedItem; }

@@ -1,8 +1,10 @@
-﻿@model IEnumerable<ECommerce.Models.Item>
+﻿
 @{
     ViewBag.Title = "Store";
 
 }
+<br />
+<br />
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Unity WebGL Player | secondPT</title>
@@ -13,13 +15,20 @@
 <script>
     var unityInstance = UnityLoader.instantiate("unityContainer", "/Build/WwbGL.json", { onProgress: UnityProgress });
 </script>
-<br/><br />
+<br />
+<br />
 <div class="container body-content">
+    <br />
+    <br />
     <div class="container body-content">
+        <br />
+        <br />
         <div class="webgl-content">
-            <div id="unityContainer" style="width: 960px; height: 580px"></div>
+            <br />
+            <br />
+            <div id="unityContainer" style="width: 960px; height: 550px"></div>
             <div class="footer">
-                <div class="webgl-logo"></div>
+                @*<div class="webgl-logo"></div>*@
                 <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
                 <div class="title">Vrtual Store</div>
             </div>

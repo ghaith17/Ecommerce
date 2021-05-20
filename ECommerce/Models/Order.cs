@@ -38,20 +38,19 @@ namespace ECommerce.Models
             set { _ItemsName = value; }
         }
 
-        public List<Item> Items { get => items; set => items = value; }
+        public  List<Item> Items { get => items; set => items = value; }
 
         public void createOrder(ShoppingCart shoppingCart)
         {
 
-           foreach(var item in shoppingCart.ListOfITems)
+            foreach (var item in shoppingCart.ListOfITems)
             {
                 this.ItemsName.Add(item.Name);
                 this.Items.Add(item);
             }
-            
+
         }
 
-        public void getOrderStatus() { }
 
     }
 

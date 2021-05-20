@@ -27,9 +27,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity.IsAuthenticated && System.Web.HttpContext.Current.Session["Id"]!=null)
                     {
-                        if (!String.IsNullOrEmpty(Session["id"].ToString()) && Session["id"].ToString().Equals("1") || Session["id"].ToString().Equals("2"))
+                        if (System.Web.HttpContext.Current.Session["Role"] != null && Session["Role"].ToString().Equals("Admin"))
                         {
                             <div class="navbar navbar-inverse navbar-fixed-top">
                                 <div class="container">
@@ -41,7 +41,7 @@
                                         <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown"><img src="~/images/Screenshot (1).png" class="roundedcorners" width="30" height="30" /><b class="caret"></b></a>
                                         <ul class="dropdown-menu realign">
 
-                                            <li>@Html.ActionLink("Manage Account", "manageAccount", "Account", new { Id = Session["id"] }, null)</li>
+                                            <li>@Html.ActionLink("Manage Account", "manageAccount", "Account")</li>
                                             <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
                                         </ul>
                                         <button class="navbar-toggle" type="button" data-target="#MainMenu" data-toggle="collapse">
@@ -64,7 +64,7 @@
                                     <a class="btn navbar-btn pull-right" style="margin-right: 5px;" href="#" data-toggle="dropdown"><img src="~/images/Screenshot (1).png" class="roundedcorners" width="30" height="30" /><b class="caret"></b></a>
                                     <ul class="dropdown-menu realign">
 
-                                        <li>@Html.ActionLink("Manage Account", "manageAccount", "Account", new { Id = Session["id"] }, null)</li>
+                                        <li>@Html.ActionLink("Manage Account", "manageAccount","Account")</li>
                                         <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
                                     </ul>
                                     <button class="navbar-toggle" type="button" data-target="#MainMenu" data-toggle="collapse">
@@ -86,7 +86,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer style="position: fixed; bottom: 0;">
             <p>&copy; @DateTime.Now.Year - Virtual Store</p>
         </footer>
     </div>

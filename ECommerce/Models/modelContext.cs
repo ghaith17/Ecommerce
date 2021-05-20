@@ -17,9 +17,7 @@ namespace ECommerce.Models
             : base("name=modelContext")
         {
         }
-        public DbSet<Admin> Admins { get; set; }
         public DbSet<Bill> Bills { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<DeliverySupplier> DeliverySuppliers { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Offer> Offers { get; set; }

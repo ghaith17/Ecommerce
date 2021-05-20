@@ -40,6 +40,7 @@ namespace ECommerce.Models
             foreach (var item in order.Items)
             {
                 total += (item.Price * item.Quantity);
+               
             }
             this.value = total.ToString();
             this.status = "shipped";
