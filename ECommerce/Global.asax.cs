@@ -1,6 +1,7 @@
 ﻿using ECommerce.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,6 +19,7 @@ namespace ECommerce
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             JobScheduler.StartAsync().GetAwaiter().GetResult();
+            Database.SetInitializer<modelContext>(new DropCreateDatabaseIfModelChanges<modelContext>());
         }
         protected void Application_BeginRequest()
         {

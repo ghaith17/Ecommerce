@@ -38,7 +38,7 @@ namespace ECommerce.Models
             set { this.status = value; }
         }
         private DateTime startDate = new DateTime();
-        [Required(ErrorMessage = "The start date is required")]
+        [Required(ErrorMessage = "The start date is required")] //, ApplyFormatInEditMode = true
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime StartDate
         {
@@ -55,12 +55,14 @@ namespace ECommerce.Models
         }
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
-            if (EndDate < StartDate)
+            if (EndDate <= StartDate)
             {
                 yield return new ValidationResult("EndDate must be greater than StartDate");
             }
+         
         }
         private decimal discount;
+        [Required(ErrorMessage = "Required")]
         [DisplayName("Discount ")]
         public decimal Discount {
             get { return this.discount; }

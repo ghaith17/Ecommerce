@@ -16,6 +16,7 @@ namespace ECommerce.Models
         }
 
         private string content;
+        [Required(ErrorMessage = "Required")]
         public string Content
         {
             get { return this.content; }

@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ECommerce.Models
 {
-    public class User
+    public class User: IValidatableObject
     {
         private string id;
         public string Id
@@ -18,6 +19,7 @@ namespace ECommerce.Models
         }
         private string userName;
         [Required(ErrorMessage = "Required")]
+        [StringLength(64, ErrorMessage = "UserName must not be more than 64 char")]
         public string UserNamee
         {
             get { return this.userName; }
@@ -30,9 +32,26 @@ namespace ECommerce.Models
             get { return this.address; }
             set { this.address = value; }
         }
+
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        {
+            var exist = false;
+            Countries.Countries c = new Countries.Countries();
+            foreach (var city in Countries.Countries.countries)
+            {
+                if (city.Value.Equals(Address))
+                {
+                    exist = true;
+                    break;
+                }
+               
+            }
+            if(!exist)
+            yield return new ValidationResult("outside jordan location");
+        }
         private string email;
         [Required(ErrorMessage = "Required")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$" ,ErrorMessage = "Invalid Email Address")]
         public string Email
         {
             get { return this.email; }
@@ -40,7 +59,7 @@ namespace ECommerce.Models
         }
         private string password;
         [Required(ErrorMessage = "Required")]
-        [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{5,}", ErrorMessage = "Your password must be at least 5 characters long and contain at least 1 letter and 1 number")]
+        [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{8,}", ErrorMessage = "Your password must be at least 8 characters long and contain at least 1 letter and 1 number")]
         [DataType(DataType.Password)]
         public string Password
         {
