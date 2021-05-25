@@ -111,7 +111,7 @@ namespace ECommerce.Models
         }
     
 
-        public void StartOffer()
+        public async Task StartOffer()
         {
             using (modelContext DB = new modelContext())
             {
@@ -137,7 +137,8 @@ namespace ECommerce.Models
                 offer.Status = "Active";
                 DB.Set<Offer>().AddOrUpdate(offer);
                 DB.SaveChanges();
-
+                offer.Notify_Users();
+                SchedulingStatus = "ON";
 
             }
         }
@@ -159,10 +160,10 @@ namespace ECommerce.Models
                 }
             }
         }
-        public static readonly string SchedulingStatus = ConfigurationManager.AppSettings["ExecuteTaskServiceCallSchedulingStatus"];
+        public static  string SchedulingStatus = ConfigurationManager.AppSettings["ExecuteTaskServiceCallSchedulingStatus"];
         public Task Execute(IJobExecutionContext context)
         {
-            var task = Task.Run(() =>
+            var task = Task.Run(async () =>
             {
                 if (SchedulingStatus.Equals("ON") )
                 
@@ -181,10 +182,10 @@ namespace ECommerce.Models
 
                                     if (offer.StartDate.ToString("MM / dd / yyyy hh: mm tt").Equals(DateTime.Now.ToString("MM / dd / yyyy hh: mm tt")) && offer.Status.Equals("Scheduled"))
                                     {
-                                       
-                                   
-                                        offer.StartOffer();
-                                        offer.Notify_Users();
+
+                                            SchedulingStatus = "OFF";
+                                            await offer.StartOffer();
+                                      
                                     }
                                     else
                                     if (offer.EndDate.ToString("MM / dd / yyyy hh: mm tt").Equals(DateTime.Now.ToString("MM / dd / yyyy hh: mm tt")) && offer.Status.Equals("Active"))

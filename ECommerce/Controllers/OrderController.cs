@@ -19,10 +19,10 @@ namespace ECommerce.Controllers
     public class OrderController : Controller
     {
         modelContext DB = new modelContext();
-        static ShoppingCart shoppingCart = new ShoppingCart();
-        static List<Item> items = new List<Item>();
-        static Order order = new Order();
-        string connection_string = "Data Source=DESKTOP-TOKQDII;Initial Catalog = DB; User ID = Ghaith; Password=Yde079078@";
+        // static ShoppingCart shoppingCart = new ShoppingCart();
+        // static List<Item> items = new List<Item>();
+        static Order CHorder = new Order();
+      
         // GET: Order
         public ActionResult Index()
         {
@@ -58,25 +58,7 @@ namespace ECommerce.Controllers
             return RedirectToAction("Login", "Account");
 
         }
-        public ActionResult DeleteFromOrder(string id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (Session["Role"] == null)
-                {
-                    Item item = new Item();
-                    item = (from obj in DB.Items
-                            where obj.Item_Id == id
-                            select obj).FirstOrDefault();
-                    items.Remove(item);
-                    return RedirectToAction("Checkouts");
-                }
-               return new HttpNotFoundResult("Not Allowed");
-              
-            }
-            return RedirectToAction("Login", "Account");
-
-        }
+    
         [HttpGet]
         public ActionResult MyBill(Order o)
         {
@@ -84,9 +66,7 @@ namespace ECommerce.Controllers
             {
                 if (Session["Role"] == null)
                 {
-                    o = order;
-                    order = null;
-                    return View(o);
+                    return View(CHorder);
                 }
                return new HttpNotFoundResult("Not Allowed");
               
@@ -101,7 +81,10 @@ namespace ECommerce.Controllers
             {
                 if (Session["Role"] == null)
                 {
-                    return View(order);
+
+
+
+                    return View(CHorder);
                 }
                return new HttpNotFoundResult("Not Allowed");
       
@@ -111,13 +94,13 @@ namespace ECommerce.Controllers
 
         }
         [HttpPost]
-        public ActionResult Checkouts(Order orderq)
+        public ActionResult Checkouts(Order order)
         {
             if (User.Identity.IsAuthenticated)
             {
                 if (Session["Role"] == null)
                 {
-                    orderq = order;
+                    
                     string id = Session["id"].ToString();
                     var user = DB.Users.SingleOrDefault(b => b.Id.Equals(id));
                     if (order != null)
@@ -125,18 +108,18 @@ namespace ECommerce.Controllers
 
                             Bill bill = new Bill();
                             bill.Id = (DB.Bills.Count() + 2).ToString();
-                            bill.generateBill(order);
+                            bill.generateBill(CHorder);
                             order.Bill = bill;
 
 
                             DB.Bills.Add(order.Bill);
-                            user.virtualWallet.pay(Double.Parse(orderq.Bill.Value));
+                            user.virtualWallet.pay(Double.Parse(order.Bill.Value));
                             DB.SaveChanges();
-                            using (SqlConnection connect = new SqlConnection(connection_string))
+                            using (SqlConnection connect = new SqlConnection(ConfigurationManager.AppSettings["connectionString"].ToString()))
                             {
 
-                                var a = String.Join(",", order.ItemsName);
-                                string query = "Insert Into [DB].[dbo].[Orders] (Id, Bill_Id, Items)" +
+                                var a = String.Join(",", CHorder.ItemsName);
+                                string query = "Insert Into [DBVirtualStore].[dbo].[Orders] (Id, Bill_Id, Items)" +
                                     "Values('" + order.Id + "','" + order.Bill.Id + "','" + a + "')";
 
                                 SqlCommand command = new SqlCommand(query, connect);
@@ -144,8 +127,9 @@ namespace ECommerce.Controllers
                                 command.ExecuteNonQuery();
                            
                             }
-
-                            return RedirectToAction("MyBill", orderq);
+                       
+                         CHorder.Bill = order.Bill;
+                            return RedirectToAction("MyBill", order);
 
                         }
 
@@ -191,15 +175,18 @@ namespace ECommerce.Controllers
                         item.Item_Id = result.Item_Id;
                         DB.SaveChanges();
                     }
+                    ShoppingCart shoppingCart = new ShoppingCart();
 
                     shoppingCart.Id = (DB.ShoppingCarts.Count() + 1).ToString();
                     shoppingCart.addToShoppingCart(items);
+                    Order order = new Order();
                     order.Id = (DB.Orders.Count() + 1).ToString();
 
                     order.createOrder(shoppingCart);
-
-
+                   
+                    CHorder = order;
                     return RedirectToAction("Checkouts");
+                   
                 }
                return new HttpNotFoundResult("Not Allowed");
     

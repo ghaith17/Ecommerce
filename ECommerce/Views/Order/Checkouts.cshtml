@@ -6,65 +6,61 @@
 
 <h2>Checkouts</h2>
 
-@using (Html.BeginForm()) 
-{
-    @*@Html.AntiForgeryToken()*@
-    
-<div class="form-horizontal">
+<div>
     <h4>Order</h4>
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-
-        <div class="col-md-10">
-            @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("Quantity")
-            </th>
-            <th>
-                @Html.DisplayName("Name")
-            </th>
-            <th>
-                @Html.DisplayName("Price")
-            </th>
-            <th></th>
-        </tr>
-        @for (int i = 0; i < Model.Items.Count; i++)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => Model.Items[i].Quantity)
-                    @Html.HiddenFor(model => Model.Items[i].Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => Model.Items[i].Name)
-                    @Html.HiddenFor(model => Model.Items[i].Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => Model.Items[i].Price)
-                    @Html.HiddenFor(model => Model.Items[i].Price)
-                </td>
-                <td>
-                    @*@Html.CheckBoxFor(model => Model.Items[i].SelectedItem, new { @class = "checkBox" })*@
-                    @Html.HiddenFor(model => Model.Items[i].Item_Id)
-
-                </td>
-
-
-            </tr>
-        }
-        </table>
-    <div class="form-group">
-        <div class="col text-center">
-            <input type="submit" value="Checkouts" class="btn btn-default" />
-        </div>
-    </div>
+    <dl class="dl-horizontal">
+    </dl>
 </div>
-}
+@using (Html.BeginForm())
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Quantity")
+        </th>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Price")
+        </th>
+        <th></th>
+    </tr>
+    @Html.HiddenFor(model => Model.Items)
+    @Html.HiddenFor(model => Model.Bill)
+    @Html.HiddenFor(model => Model.ItemsName)
+    @Html.HiddenFor(model => Model.Id)
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Quantity)
+                @Html.HiddenFor(model => Model.Items[i].Quantity)
+                @Html.HiddenFor(model => Model.ItemsName[i])
+            </td>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Name)
+                @Html.HiddenFor(model => Model.Items[i].Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Price)
+                @Html.HiddenFor(model => Model.Items[i].Price)
+            </td>
+            <td>
 
+                @Html.HiddenFor(model => Model.Items[i].Item_Id)
+
+            </td>
+
+
+        </tr>
+    }
+
+</table>
+    <div class="col text-center">
+        <input type="submit" value="Checkouts" class="btn btn-default" />
+    </div>
+
+}
 

@@ -24,8 +24,7 @@ namespace ECommerce.Models
         public virtual Item item { get; set; }
         public void addToShoppingCart(List<Item> items)
         {
-
-            ListOfITems = items;
+            listOfITems = items;
 
         }
         

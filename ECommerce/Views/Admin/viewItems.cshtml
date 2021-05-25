@@ -6,9 +6,7 @@
 
 <h2>viewItems</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -41,7 +39,7 @@
             @Html.DisplayFor(modelItem => item.SelectedItem)
         </td>
         <td>
-            @Html.ActionLink("Edit", "UpdateItem", new { id = item.Item_Id }) |
+            @Html.ActionLink("Edit", "UpdateItem", new { id = item.Item_Id}) |
             @Html.ActionLink("Details", "GetDetails", new { id = item.Item_Id }) |
             @Html.ActionLink("Delete", "DeleteItem",  new { id = item.Item_Id })
         </td>

@@ -78,7 +78,7 @@ namespace ECommerce.Controllers
                         using (SqlConnection connect = new SqlConnection(ConfigurationManager.AppSettings["connectionString"].ToString()))
                         {
 
-                            string query = "Select Items From [DB].[dbo].[Orders] where Id=@Order_Id;";
+                            string query = "Select Items From [DBVirtualStore].[dbo].[Orders] where Id=@Order_Id;";
 
                             SqlCommand command = new SqlCommand(query, connect);
                             command.Parameters.AddWithValue("@Order_Id", order.Id);

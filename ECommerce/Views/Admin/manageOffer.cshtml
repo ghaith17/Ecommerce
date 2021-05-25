@@ -79,6 +79,7 @@
                     @Html.CheckBoxFor(model => Model.Items[i].SelectedItem, new { @class = "checkBox" })
                     @Html.HiddenFor(model => Model.Items[i].Item_Id)
                     @Html.HiddenFor(model => Model.Items[i].DefualtPrice)
+                    @Html.HiddenFor(model => Model.Items[i].Description)
 
                 </td>
 
@@ -97,6 +98,7 @@
         <div class="form-group">
             @Html.Label("Start Date : ", htmlAttributes: new { @class = "control-label col-md-2" }) 
             <div class="col-md-10">
+                @Html.HiddenFor(model=>model.Offer_id)
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control datetimepicker1" }, required = "required" })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
@@ -133,4 +135,6 @@
         </div>
     </div>
 }
-
+<div>
+    @Html.ActionLink("View Offers", "viewOffers")
+</div>

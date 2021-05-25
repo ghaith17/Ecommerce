@@ -21,7 +21,7 @@ namespace ECommerce.Models
             set { this.item_id = value; }
         }
         private int quantity;
-        [Range(1, 50, ErrorMessage= "minimum 1 , maximum 50")]
+  
         public int Quantity
         {
             get { return this.quantity; }
