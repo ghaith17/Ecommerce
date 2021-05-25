@@ -5,6 +5,9 @@ using System.Web.Security;
 using System.Web.Mvc.Filters;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Data.Entity;
+using System.Security.Principal;
+using System;
 
 namespace ECommerce.Controllers
 {
@@ -26,11 +29,15 @@ namespace ECommerce.Controllers
                 if (isValid)
                 {
                     FormsAuthentication.SetAuthCookie(user.UserNamee, false);
-                    User oldUser = (from obj in modelContext.Users
+                    User auth_user = (from obj in modelContext.Users
                                     where obj.Email == user.Email && obj.Password == user.Password
                                     select obj).FirstOrDefault();
-                    Session["id"] = oldUser.Id;
-                    return RedirectToAction("Index", "Users");
+                    Session["id"] = auth_user.Id;
+                    if(auth_user.Id.Equals("1") || auth_user.Id.Equals("2"))
+                    {
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
+                    return RedirectToAction("Dashboard", "Home");
                 }
                 ModelState.AddModelError("", "Invalid email and password");
                 return View();
@@ -57,31 +64,22 @@ namespace ECommerce.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login");
-        }
-
         [Authorize]
         [HttpPost]
-        public ActionResult manageAccount(User newUser)
+        public ActionResult manageAccount(User user)
         {
-            using (var modelContext = new modelContext())
+            if (User.Identity.IsAuthenticated)
             {
-                User oldUser = new User();
-                oldUser = (from obj in modelContext.Users
-                           where obj.Id == newUser.Id
-                           select obj).FirstOrDefault();
-
-                /// replace newUser with oldUser
-                newUser.Id = oldUser.Id;
-                newUser.UserNamee = oldUser.UserNamee;
-                newUser.Address = oldUser.Address;
-                newUser.Email = oldUser.Email;
-                newUser.Password = oldUser.Password;
-
-                modelContext.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    using (var modelContext = new modelContext())
+                    {
+                        
+                        modelContext.Entry(user).State = EntityState.Modified;
+                        modelContext.SaveChanges();
+                    }
+                }
+                return RedirectToAction("Logout","Home");
             }
             return RedirectToAction("Login");
         }
@@ -89,52 +87,21 @@ namespace ECommerce.Controllers
         [HttpGet]
         public ActionResult manageAccount(string id)
         {
-
-            using (var modelContext = new modelContext())
+            if (User.Identity.IsAuthenticated)
             {
-                User oldUser = new User();
-                oldUser = (from obj in modelContext.Users
-                           where obj.Id == id
-                           select obj).FirstOrDefault();
-                modelContext.SaveChanges();
-                return View(oldUser);
+                using (var modelContext = new modelContext())
+                {
+                    User user = new User();
+                    user = (from obj in modelContext.Users
+                            where obj.Id == id
+                            select obj).FirstOrDefault();
+
+                    return View(user);
+                }
+
             }
-
+            return RedirectToAction("Login");
         }
-
-        [HttpPost]
-        public ActionResult sendFeedback(FeedBack feedBack)
-        {
-            var modelContext = new modelContext();
-            if (feedBack != null)
-            {
-                modelContext.feedBacks.Add(feedBack);
-                modelContext.SaveChanges();
-                return RedirectToAction("Login");
-            }
-            return View();
-
-        }
-        [HttpGet]
-        public ActionResult sendFeedback()
-        {
-
-            return View();
-
-        }
-        protected bool check()
-        {
-            if (Session["id"] != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-
 
 
     }

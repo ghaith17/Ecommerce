@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SealedItem)
+            @Html.DisplayNameFor(model => model.SelectedItem)
         </th>
         <th></th>
     </tr>
@@ -38,12 +38,12 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SealedItem)
+            @Html.DisplayFor(modelItem => item.SelectedItem)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Item_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Item_Id }) |
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink("Edit", "UpdateItem", new { id = item.Item_Id }) |
+            @Html.ActionLink("Details", "GetDetails", new { id = item.Item_Id }) |
+            @Html.ActionLink("Delete", "DeleteItem",  new { id = item.Item_Id })
         </td>
     </tr>
 }

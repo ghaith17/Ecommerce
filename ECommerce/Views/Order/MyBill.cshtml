@@ -1,4 +1,4 @@
-﻿@model ECommerce.Models.Bill
+﻿@model ECommerce.Models.Order
 
 @{
     ViewBag.Title = "MyBill";
@@ -7,36 +7,96 @@
 <h2>MyBill</h2>
 
 <div>
-    <h4>Bill</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Value)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Value)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BillDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BillDate)
-        </dd>
-
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Quantity")
+        </th>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Price")
+        </th>
+        <th></th>
+    </tr>
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Quantity)
+                @Html.HiddenFor(model => Model.Items[i].Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Name)
+                @Html.HiddenFor(model => Model.Items[i].Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => Model.Items[i].Price)
+                @Html.HiddenFor(model => Model.Items[i].Price)
+            </td>
+            <td>
+                @*@Html.CheckBoxFor(model => Model.Items[i].SelectedItem, new { @class = "checkBox" })*@
+                @Html.HiddenFor(model => Model.Items[i].Item_Id)
+
+            </td>
+
+
+        </tr>
+    }
+</table>
+<div>
+    <dt>
+        @Html.DisplayName("Total : ")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Bill.Value)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Status : ")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Bill.Status)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Bill Date : ")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Bill.BillDate)
+    </dd>
+    @{ ECommerce.Models.modelContext DB = new ECommerce.Models.modelContext();
+        string id = Session["id"].ToString();
+        var user = DB.Users.SingleOrDefault(b => b.Id.Equals(id)); }
+    <dt>
+        @Html.DisplayName("User Name : ")
+    </dt>
+
+    <dd>
+        @Html.DisplayName(@user.UserNamee)
+    </dd>
+    <dt>
+        @Html.DisplayName("Address : ")
+    </dt>
+
+    <dd>
+        @Html.DisplayName(@user.Address)
+    </dd>
+    <dt>
+        @Html.DisplayName("Email : ")
+    </dt>
+
+    <dd>
+        @Html.DisplayName(@user.Email)
+    </dd>
+</div>
+
+

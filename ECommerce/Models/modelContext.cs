@@ -12,6 +12,7 @@ namespace ECommerce.Models
         // 
         // If you wish to target a different database and/or database provider, modify the 'modelContext' 
         // connection string in the application configuration file.
+
         public modelContext()
             : base("name=modelContext")
         {

@@ -1,40 +1,83 @@
 ﻿using ECommerce.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ECommerce.Controllers
 {
     public class HomeController : Controller
     {
-        protected Admin admin;
-        protected Customer customer;
-        static List<Item> listOfItems = new List<Item>();
-        static List<Order> listOfOrders = new List<Order>();
-        static List<Offer> listOfOffers = new List<Offer>();
-        public ActionResult Index()
+        // Get
+        public ActionResult Dashboard()
         {
-            modelContext modelContext1 = new modelContext();
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Account");
         }
 
-        public ActionResult About()
+        [HttpPost]
+        public ActionResult sendFeedback(FeedBack feedBack)
         {
-            ViewBag.Message = "Your application description page.";
+            if (User.Identity.IsAuthenticated)
+            {
+                using (var modelContext = new modelContext())
+                {
+                    if (feedBack != null)
+                    {
+                        feedBack.Id = (modelContext.feedBacks.Count() + 1).ToString();
+                        string id = Session["id"].ToString();
+                        var user = modelContext.Users.SingleOrDefault(b => b.Id.Equals(id));
+                        feedBack.UserName = user.UserNamee;
+                        modelContext.feedBacks.Add(feedBack);
+                        modelContext.SaveChanges();
+                        return RedirectToAction("Dashboard");
+                    }
+                }     
+            }
+            return RedirectToAction("Login","Account");
 
-            return View();
+
+        }
+        [HttpGet]
+        public ActionResult sendFeedback()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Account");
+
+        }
+        [HttpGet]
+        public ActionResult Store()
+        {
+          //  if (User.Identity.IsAuthenticated)
+            {
+                var modelContext = new modelContext();
+                return View(modelContext.Items.ToList());
+            }
+          //  return RedirectToAction("Login", "Account");
+
         }
 
-        public ActionResult Contact()
+        public ActionResult Logout()
         {
-            ViewBag.Message = "Your contact page.";
 
-            return View();
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+            return RedirectToAction("Login","Account");
         }
-  
- 
+
+
+
+
+
 
     }
 }
