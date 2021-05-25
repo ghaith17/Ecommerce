@@ -40,7 +40,7 @@
                 @Html.HiddenFor(model => Model.Items[i].Price)
             </td>
             <td>
-                @*@Html.CheckBoxFor(model => Model.Items[i].SelectedItem, new { @class = "checkBox" })*@
+            
                 @Html.HiddenFor(model => Model.Items[i].Item_Id)
 
             </td>
@@ -95,7 +95,7 @@
     </dt>
 
     <dd>
-        @Html.DisplayName(@user.Email)
+        @Html.Display(@user.Email)
     </dd>
 </div>
 

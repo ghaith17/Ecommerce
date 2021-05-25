@@ -13,6 +13,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.IO;
+using System.Web.Mvc;
+using ECommerce.Controllers;
+using ECommerce.Utility;
+using System.Web.Hosting;
 
 namespace ECommerce.Models
 {
@@ -33,7 +38,7 @@ namespace ECommerce.Models
             set { this.status = value; }
         }
         private DateTime startDate = new DateTime();
-        [Required(ErrorMessage = "The start date is required")]
+        [Required(ErrorMessage = "The start date is required")] //, ApplyFormatInEditMode = true
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime StartDate
         {
@@ -50,12 +55,14 @@ namespace ECommerce.Models
         }
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
-            if (EndDate < StartDate)
+            if (EndDate <= StartDate)
             {
                 yield return new ValidationResult("EndDate must be greater than StartDate");
             }
+         
         }
         private decimal discount;
+        [Required(ErrorMessage = "Required")]
         [DisplayName("Discount ")]
         public decimal Discount {
             get { return this.discount; }
@@ -63,11 +70,10 @@ namespace ECommerce.Models
         }
         public virtual List<Item> Items { get => items; set => items = value; }
         private List<Item> items = new List<Item>();
-        //public string Item_Id { get; set; }
-        //[ForeignKey("Item_Id")]
-        //public virtual Item  item { get ; set;}
 
 
+
+       
 
         public void StopOffer()
         {
@@ -79,18 +85,18 @@ namespace ECommerce.Models
                 {
 
                     var result = DB.Items.SingleOrDefault(b => b.Item_Id.Equals(item.Item_Id));
-                  
+
                     if (result != null)
                     {
                         if (result.SelectedItem)
                         {
                             result.Price = result.Price + (result.DefualtPrice * Double.Parse(this.Discount.ToString()));
-                            //result.offer.Offer_id = null;
-                            
+
+
                             result.SelectedItem = false;
                             DB.Set<Item>().AddOrUpdate(result);
                         }
-                        // DB.Offers.Find(this).Status = "Expired";
+
                         offer.Items.Remove(result);
                         DB.SaveChanges();
                     }
@@ -119,11 +125,11 @@ namespace ECommerce.Models
                         if (item.SelectedItem)
                         {
                             result.Price = result.Price - (result.Price * Double.Parse(this.Discount.ToString()));
-                            //DB.Entry<Item>(result).State = EntityState.Modified;
+
                             DB.Set<Item>().AddOrUpdate(result);
                         }
-                       // this.Status = "Active";
-                       
+
+
                         DB.SaveChanges();
                     }
 
@@ -133,6 +139,24 @@ namespace ECommerce.Models
                 DB.SaveChanges();
 
 
+            }
+        }
+        public void Notify_Users()
+        {
+            using (var modelContext = new modelContext())
+            {
+                foreach (var user in modelContext.Users)
+                {
+                    var callbackUrl = "http://localhost:59441/Account/Login";
+                    string body = string.Empty;
+                    using (StreamReader reader = new StreamReader(HostingEnvironment.MapPath("~/MailTemplate/OfferNotification.html")))
+                    {
+                        body = reader.ReadToEnd();
+                    }
+                    body = body.Replace("{ConfirmationLink}", callbackUrl);
+                    body = body.Replace("{UserName}", user.UserNamee);
+                    bool IsSendEmail = SendEmail.EmailSend(user.Email, "Offer Notification", body, true);
+                }
             }
         }
         public static readonly string SchedulingStatus = ConfigurationManager.AppSettings["ExecuteTaskServiceCallSchedulingStatus"];
@@ -158,14 +182,14 @@ namespace ECommerce.Models
                                     if (offer.StartDate.ToString("MM / dd / yyyy hh: mm tt").Equals(DateTime.Now.ToString("MM / dd / yyyy hh: mm tt")) && offer.Status.Equals("Scheduled"))
                                     {
                                        
-                                     //   DB.SaveChanges();
+                                   
                                         offer.StartOffer();
+                                        offer.Notify_Users();
                                     }
                                     else
                                     if (offer.EndDate.ToString("MM / dd / yyyy hh: mm tt").Equals(DateTime.Now.ToString("MM / dd / yyyy hh: mm tt")) && offer.Status.Equals("Active"))
                                     {
-                                       // offer.Status = "Expired";
-                                      //  DB.SaveChanges();
+                                       
 
                                         offer.StopOffer();
                                     }

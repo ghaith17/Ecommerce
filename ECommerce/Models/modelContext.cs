@@ -12,14 +12,35 @@ namespace ECommerce.Models
         // 
         // If you wish to target a different database and/or database provider, modify the 'modelContext' 
         // connection string in the application configuration file.
+        private static modelContext instance ;
+        private static Object Lock= new Object();
 
-        public modelContext()
-            : base("name=modelContext")
+        static modelContext() //: base("name=modelContext")
         {
+            DbContext dbContext= new DbContext("name=modelContext");
+            getInstance();
         }
-        public DbSet<Admin> Admins { get; set; }
+        //private modelContext()
+        //    : base("name=modelContext")
+        //{
+
+        //}
+
+        public static modelContext getInstance()
+        {
+            if (instance == null)
+            {
+                lock(Lock) {
+                    if (instance == null)
+                    {
+                        instance = new modelContext();
+                    }
+                }
+            }
+            return instance;
+        }
+    
         public DbSet<Bill> Bills { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<DeliverySupplier> DeliverySuppliers { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Offer> Offers { get; set; }

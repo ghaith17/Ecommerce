@@ -16,7 +16,12 @@ namespace ECommerce.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View();
+                if (Session["Role"] == null)
+                {
+                    return View();
+                }
+               return new HttpNotFoundResult("Not Allowed");
+              
             }
             return RedirectToAction("Login", "Account");
         }
@@ -26,19 +31,29 @@ namespace ECommerce.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                using (var modelContext = new modelContext())
+                if (Session["Role"] == null)
                 {
-                    if (feedBack != null)
+                    if (ModelState.IsValid)
                     {
-                        feedBack.Id = (modelContext.feedBacks.Count() + 1).ToString();
-                        string id = Session["id"].ToString();
-                        var user = modelContext.Users.SingleOrDefault(b => b.Id.Equals(id));
-                        feedBack.UserName = user.UserNamee;
-                        modelContext.feedBacks.Add(feedBack);
-                        modelContext.SaveChanges();
-                        return RedirectToAction("Dashboard");
+                        using (var modelContext = new modelContext())
+                        {
+                            if (feedBack != null)
+                            {
+                                feedBack.Id = (modelContext.feedBacks.Count() + 1).ToString();
+                                string id = Session["id"].ToString();
+                                var userName = (from s in modelContext.Users where s.Id == id select s.UserNamee).FirstOrDefault();
+                                feedBack.UserName = userName;
+                                modelContext.feedBacks.Add(feedBack);
+                                modelContext.SaveChanges();
+                                return RedirectToAction("Dashboard");
+                            }
+                        }
                     }
-                }     
+                    return View();
+                }
+               return new HttpNotFoundResult("Not Allowed");
+                
+
             }
             return RedirectToAction("Login","Account");
 
@@ -49,7 +64,13 @@ namespace ECommerce.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View();
+                if (Session["Role"] == null)
+                {
+                    return View();
+                }
+               return new HttpNotFoundResult("Not Allowed");
+              
+
             }
             return RedirectToAction("Login", "Account");
 
@@ -57,12 +78,18 @@ namespace ECommerce.Controllers
         [HttpGet]
         public ActionResult Store()
         {
-          //  if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
-                var modelContext = new modelContext();
-                return View(modelContext.Items.ToList());
+                if (Session["Role"] == null)
+                {
+                    return View();
+                }
+               return new HttpNotFoundResult("Not Allowed");
+             
+
             }
-          //  return RedirectToAction("Login", "Account");
+
+           return RedirectToAction("Login", "Account");
 
         }
 

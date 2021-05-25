@@ -24,13 +24,11 @@ namespace ECommerce.Models
         public virtual Item item { get; set; }
         public void addToShoppingCart(List<Item> items)
         {
-            //foreach (var item in items)
-            //{
+
             ListOfITems = items;
-           // }
+
         }
         
-        public void updateQuantity() { }
-        public void removeItem() { }
+
     }
 }

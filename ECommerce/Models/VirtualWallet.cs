@@ -17,7 +17,7 @@ namespace ECommerce.Models
             get { return this.virtualWallet_id; }
             set { this.virtualWallet_id = value; }
         }
-        private double balance;
+        private double balance =3000;
         public double Balance
         {
             get { return this.balance; }
