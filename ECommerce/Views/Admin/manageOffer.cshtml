@@ -4,8 +4,8 @@
 @{
     ViewBag.Title = "manageOffer";
 }
-
-<h2>manage Offer</h2>
+<div style="height:80px" />
+<h2 style="margin-top:40px; margin-bottom:40px">Manage Offer</h2>
 
 
 <link href="~/Content/jquery.datetimepicker.min.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
 <p>
-<br />
+    <br />
 </p>
 @using (Html.BeginForm("manageOffer", "Admin", FormMethod.Post))
 {
@@ -64,7 +64,7 @@
         {
             <tr>
                 <td>
-                
+
                     @Html.HiddenFor(model => Model.Items[i].Quantity)
                 </td>
                 <td>
@@ -72,7 +72,7 @@
                     @Html.HiddenFor(model => Model.Items[i].Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => Model.Items[i].Price)
+                    @Html.DisplayFor(model => Model.Items[i].Price)$
                     @Html.HiddenFor(model => Model.Items[i].Price)
                 </td>
                 <td>
@@ -89,29 +89,29 @@
 
     </table>
 
-
+    <hr />
 
     <div class="form-horizontal">
-        <h4>Offer</h4>
+        <h4>Make an Offer</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })*
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.Label("Start Date : ", htmlAttributes: new { @class = "control-label col-md-2" }) 
+            @Html.Label("Start Date : ", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.HiddenFor(model=>model.Offer_id)
+                @Html.HiddenFor(model => model.Offer_id)
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control datetimepicker1" }, required = "required" })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("End Date : ", htmlAttributes: new { @class = "control-label col-md-2" }) 
-                <div class="col-md-10">
+            @Html.Label("End Date : ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
 
-                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control datetimepicker1" }, required = "required" })
-                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control datetimepicker1" }, required = "required" })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
 
-                </div>
+            </div>
 
         </div>
         <script>
@@ -125,6 +125,8 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "control-label col-md-2" }, required = "required" })
                 @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                <p style="margin-top:7px;">&nbsp;&nbsp;   (Percentage)</p>
+                
             </div>
         </div>
 

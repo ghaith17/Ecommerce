@@ -43,7 +43,7 @@ namespace ECommerce.Models
                
             }
             this.value = total.ToString();
-            this.status = "shipped";
+            this.status = "processing";
             this.billDate = DateTime.Now;
         }
     }

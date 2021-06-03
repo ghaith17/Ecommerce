@@ -4,7 +4,7 @@
     ViewBag.Title = "viewItems";
 }
 
-<h2>viewItems</h2>
+<h2 style="margin-top:40px">View Items</h2>
 
 
 <table class="table">
@@ -19,7 +19,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SelectedItem)
+            @Html.DisplayName("Selected Items")
         </th>
         <th></th>
     </tr>
@@ -33,7 +33,7 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Price)
+            @Html.DisplayFor(modelItem => item.Price)$
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SelectedItem)

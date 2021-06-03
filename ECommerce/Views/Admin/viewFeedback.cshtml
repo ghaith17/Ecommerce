@@ -4,30 +4,31 @@
     ViewBag.Title = "view Feedbacks";
 }
 
-<h2>view Feedbacks</h2>
+<h2 style="margin-top:40px; margin-bottom:40px">View Feedbacks</h2>
 
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Content)
+            @Html.DisplayName("User Name")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.Content)
         </th>
-        <th></th>
+
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-       
-    </tr>
+@foreach (var item in Model)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Content)
+    </td>
+
+</tr>
 }
 
 </table>

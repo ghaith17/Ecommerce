@@ -682,6 +682,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\add.png" />
+    <Content Include="images\cc.png" />
     <Content Include="images\discount.png" />
     <Content Include="images\feedback.png" />
     <Content Include="images\labtop.jpg" />

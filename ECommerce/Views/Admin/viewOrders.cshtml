@@ -4,7 +4,7 @@
     ViewBag.Title = "view Orders";
 }
 
-<h2>view Orders</h2>
+<h2 style="margin-top:40px; margin-bottom:40px">View Orders</h2>
 
 <p>
 
@@ -15,7 +15,7 @@
             @Html.DisplayName("Date ")
         </th>
         <th>
-            @Html.DisplayName("Value ")
+            @Html.DisplayName("Total ")
         </th>
         <th>
             @Html.DisplayName("Items ")
@@ -36,7 +36,7 @@
                 @Html.DisplayFor(modelOrder => order.Bill.BillDate)
             </td>
             <td>
-                @Html.DisplayFor(modelOrder => order.Bill.Value)
+                @Html.DisplayFor(modelOrder => order.Bill.Value)$
             </td>
             <td>
 
